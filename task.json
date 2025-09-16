@@ -1,0 +1,62 @@
+[
+  {
+    "id": 5,
+    "title": "Design Login Page",
+    "description": "Create a modern responsive login page.",
+    "assignee": "Alice",
+    "dueDate": "2025-09-20",
+    "Status": "Done",
+     "const": 10,
+    "progress": 60
+  },
+  {
+    "id": 6,
+    "title": "Fix API Bug",
+    "description": "Resolve 404 error in task fetch route.",
+    "assignee": "Bob",
+    "dueDate": "2025-09-22",
+    "Status": "Done",
+    "const": 10,
+    "progress": 30
+  },
+  {
+    "id": 1,
+    "title": "Design homepage",
+    "description": "Create a responsive layout for the homepage with header, footer, and hero section.Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch Connect frontend to backend API for user authentication and task fetch",
+    "assignee": "Alice Johnson",
+    "dueDate": "2025-09-20",
+    "Status": "To Do",
+     "const": 10,
+    "progress": 0
+  },
+  {
+    "id": 2,
+    "title": "API Integration",
+    "description": "Connect frontend to backend API for user authentication and task fetch.",
+    "assignee": "James Smith",
+    "dueDate": "2025-09-21",
+    "Status": "In Progress",
+     "const": 10,
+    "progress": 40
+  },
+  {
+    "id": 3,
+    "title": "Fix mobile bugs",
+    "description": "Resolve sidebar collapse issues on smaller screens and fix overflow bugs.",
+    "assignee": "Fatima Bello",
+    "dueDate": "2025-09-22",
+    "Status": "In Progress",
+     "const": 10,
+    "progress": 60
+  },
+  {
+    "id": 4,
+    "title": "Deploy to Netlify",
+    "description": "Push the complete frontend to GitHub and connect with Netlify for deployment.",
+    "assignee": "Daniel Ade",
+    "dueDate": "2025-09-19",
+    "Status": "To Do",
+     "const": 10,
+    "progress": 100
+  }
+]
