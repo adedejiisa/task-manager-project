@@ -7,7 +7,7 @@
     "dueDate": "2025-09-20",
     "Status": "Done",
      "const": 10,
-    "progress": 60
+    "progress": 100
   },
   {
     "id": 6,
@@ -17,7 +17,7 @@
     "dueDate": "2025-09-22",
     "Status": "Done",
     "const": 10,
-    "progress": 30
+    "progress": 100
   },
   {
     "id": 1,
@@ -57,6 +57,6 @@
     "dueDate": "2025-09-19",
     "Status": "To Do",
      "const": 10,
-    "progress": 100
+    "progress": 0
   }
 ]
