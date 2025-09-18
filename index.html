@@ -3,59 +3,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TASKHIVE - Kanban Board</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>TASKHIVE - Task</title>
+  <link rel="stylesheet" href="new.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- <link rel="stylesheet" href="styles.css"> -->
+  
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
-      height: 100vh;
-      /* background: black; */
     }
+.task-column {
+  width: 300px;
+  padding: 16px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-task-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.task-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  padding: 16px;
+  font-size: 14px;
+}
+
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.task-subtitle {
+  margin: 4px 0;
+  color: gray;
+  font-size: 0.85rem;
+}
+
+.task-menu {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+}
+
+.task-progress {
+  margin-top: 12px;
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.progress-count {
+  float: right;
+  font-size: 0.85rem;
+}
+
+.progress-bar {
+  background: #eee;
+  border-radius: 4px;
+  height: 6px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #f0c000, #000);
+}
+
+.task-date {
+  margin-top: 12px;
+}
+
+.date-pill {
+  background-color: #f0f4ff;
+  color: #007bff;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+    /* Sidebar */
     .sidebar {
-        /* position: fixed;
-        left: 0;
-        height: 100%;
-        z-index: 9999999; */
-      width: 200px;
-      background: #222;
-      color: #fff;
-      padding: 20px;
-      display:none;
+      width: 220px;
+      background-color: #ffffff;
+      border-right: 1px solid #ddd;
+      height: 100vh;
+      padding-top: 20px;
+      padding-left:10px;
+      position: fixed;
+      transition: transform 0.3s ease;
+      z-index: 1000;
     }
-    .sidebar h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    .sidebar-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #0057b8;
     }
-    .sidebar ul {
+    .sidebar-nav ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
-    .sidebar li {
-      padding: 8px 0;
+    .sidebar-nav li {
+      margin: 10px 0;
+    }
+    .sidebar-nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px 20px;
+      display: block;
+      transition: background 0.2s;
+    }
+    .sidebar-nav a:hover{
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      width: 60%;
+    }
+    .sidebar-nav .active a {
+      background-color: #0057b8;
+      color: #f0f0f0;
+      font-weight: 600;
+      border-radius: 20px;
+      width: 60%;
+    }
+
+    /* Toggle button */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background:inherit;
+      z-index: 1100;
+      color: #222;
+      border: none;
+      font-size: 20px;
+      padding: 8px 12px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      width: 70%;
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar.close{
+        width:-100;
+      }
+      .sidebar-toggle {
+        display: block;
+      }
+      body {
+        padding-left: 0;
+      }
     }
-    .header {
-      background: #007BFF;
-      color: #fff;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+
+    /* Board */
     .board {
       flex: 1;
+      margin-left: 220px;
       display: flex;
       padding: 20px;
       gap: 20px;
       background: #f4f4f4;
+      transition: margin-left 0.3s ease;
+    }
+    @media (max-width: 768px) {
+      .board {
+        margin-left: 0;
+      }
     }
     .column {
       flex: 1;
@@ -63,7 +211,7 @@
       padding: 10px;
       border-radius: 8px;
     }
-    .tasks {
+  .tasks {
       min-height: 100px;
     }
     .task {
@@ -74,119 +222,455 @@
       margin-bottom: 10px;
       position: relative;
     }
-    .progress2 {
-      background: #eee;
-      height: 8px;
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 5px 0;
-    }
-    .progress {
-      background: #007BFF;
-      height: 8px;
-    }
-    /* .task-menu {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-    } */
-    .menu-options {
-      position: absolute;
-      right: 0;
-      top: 20px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      display: none;
-      z-index: 100;
-    }
-    /* .menu-options div {
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    .menu-options div:hover {
-      background: #f0f0f0;
-    } */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      /* max-width: 400px; */
-      /* width: 50%; */
-    }
-    .close {
-      float: right;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .warning {
+    .overdue {
+      border: 2px solid red;
+      background: #ffe6e6;
       color: red;
-      margin: 5px 0;
+    } 
+
+    /* Status filter */
+   
+   
+    @media (max-width: 768px) {
+       .board {
+        margin-left: 0;
+        flex-direction: column; 
+      }
     }
-    .delIcon{
-        font-size: 3rem;
+  
+    .sidebar-header {
+  display: flex;
+  align-items: center;   /* vertically center */
+  gap: 10px;             /* space between logo and text */
+}
+
+.sidebar-header svg {
+  flex-shrink: 0;        /* prevent the logo from shrinking */
+}
+
+.sidebar-header .logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0057b8;        /* matches logo blue */
+}
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
     }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Left section */
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-left img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .user-info h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .user-info p {
+      margin: 0;
+      font-size: 12px;
+      color: gray;
+    }
+
+    /* Right section */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-right svg {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .create-btn {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .create-btn:hover {
+      background: #1d4ed8;
+    }
+
+    @media (max-width: 600px) {
+      .user-info p {
+        display: none; /* Hide welcome text on small screens */
+      }
+    }
+
+    .icon {
+  width: 20px;
+  height: 20px;
+  fill: #333;
+  flex-shrink: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;         /* space between icon + text */
+  color: #333;
+  text-decoration: none;
+  padding: 10px 20px;
+  transition: background 0.2s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav .active a {
+  background-color: #0057b8;
+  color: #f0f0f0;
+  font-weight: 600;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0057b8;
+  margin-bottom: 20px;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;   /* vertically center */
+  gap: 10px;            
+}
+
+.sidebar-header svg {
+  flex-shrink: 0;        /* prevent the logo from shrinking */
+}
+
+.sidebar-header .logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0057b8;        /* matches logo blue */
+}
+.header {
+  display: none;
+  position: fixed;
+  top: 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-left .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo svg {
+  margin-right: 8px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-info h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right .icon {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.create-task {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.main-header {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  height: 64px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #eee;
+  padding-left: 240px; /* Adjust if sidebar width changes */
+  width:100%;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.user-details h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.user-details p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+cursor: pointer;
+}
+
+.primary-btn ,  .primary-btn2{
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+aside{
+  margin-bottom: 10px;
+}
+@media (max-width: 768px) {
+  @media (max-width: 768px) {
+  .main-header {
+    padding-left: 0;
+  }
+  .user-details p {
+    display: none; /* hide subtitle */
+  }
+  .primary-btn {
+    display: none; /* hide full button */
+  }
+  .primary-btn2 {
+    display: inline-block; /* show small + button */
+  }
+}
+
+.sidebar-toggle {
+  display: inline-block;
+  font-size: 24px;
+  margin-right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.primary-btn{
+  display:none;
+}
+.primary-btn2{
+  display:block;
+}
+body{
+overflow: hidden;
+}
+.sidebar{
+  width: 100%;
+}
+}
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>Dashboard</h2>
-    <div id="currentUser">Loading user...</div>
+
+ <header class="main-header">
+  <div class="user-info">
+    <img src="user.jpg" alt="User Avatar" class="avatar" />
+    <div class="user-details">
+      <h4>Augustine Vivace</h4>
+      <p>Frontend Developer | KodeCamp</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="primary-btn">+ Add Task</button>
+    <button class="primary-btn2" id="addTaskBtn">+</button>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+  </div>
+</header>
+
+
+
+
+  
+<aside class="sidebar" id="sidebar">
+          <button class="sidebar-close " id="sidebarClose">X</button>X</button>
+
+  <div class="sidebar-header">
+
+  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" style="margin-left: 0;">
+    <circle cx="20" cy="20" r="20" fill="#0057b8"/>
+    <path d="M12 20l5 5 11-11" stroke="white" stroke-width="3" fill="none" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+    TaskHive
+  </div>
+
+
+  <nav class="sidebar-nav">
     <ul>
-      <li>Projects</li>
-      <li>Teams</li>
-      <li>Settings</li>
+      <li><a href="#">
+        <!-- Dashboard SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+        </svg>
+        Dashboard
+      </a></li>
+
+      <li class="active"><a href="#">
+       
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M3 3h7v9H3V3zm0 11h7v7H3v-7zm11-11h7v5h-7V3zm0 7h7v11h-7V10z"/>
+</svg>
+
+
+        Tasks
+      </a></li>
+
+      <li><a href="#">
+        <!-- Bell SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4a2 
+                   2 0 002 2zm6-6V9a6 6 0 00-5-5.91V2h-2v1.09A6 
+                   6 0 006 9v7l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        Notifications
+      </a></li>
+
+      <li><a href="#">
+        <!-- Cog SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.14,12.94c0-.32.06-.66.06-1s0-.68-.06-1l2.11-1.65a.49.49,0,0,0,.11-.64l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a7,7,0,0,0-1.73-1L14.46,2.5a.5.5,0,0,0-.5-.5H10a.5.5,0,0,0-.5.5L9,5.06a7.19,7.19,0,0,0-1.73,1l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.11.64L4.86,11c0,.32-.06.66-.06,1s0,.68.06,1L2.75,14.65a.49.49,0,0,0-.11.64l2,3.46a.5.5,0,0,0,.61.22l2.49-1a7,7,0,0,0,1.73,1L9.5,21.5a.5.5,0,0,0,.5.5h4a.5.5,0,0,0,.5-.5l.46-2.56a7.19,7.19,0,0,0,1.73-1l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.11-.64ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
+        </svg>
+        Settings
+      </a></li>
+
+      <li><a href="#">
+        <!-- Logout SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 13v-2H7V8l-5 4 5 4v-3h9zm3-10H5c-1.1 
+                   0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 
+                   1.1.9 2 2 2h14c1.1 0 2-.9 
+                   2-2V5c0-1.1-.9-2-2-2z"/>
+        </svg>
+        Logout
+      </a></li>
     </ul>
+  </nav>
+</aside>
+  <!-- Toggle button (mobile) -->
+
+  <!-- Filters -->
+  <!-- <div id="Status">
+    <p class="status" onclick="toDo.style.display='block'; inProgress.style.display='block'; done.style.display='block';">All</p>
+    <p class="status" onclick="toDo.style.display='block'; inProgress.style.display='none'; done.style.display='none';">To Do</p>
+    <p class="status" onclick="toDo.style.display='none'; inProgress.style.display='block'; done.style.display='none';">In Progress</p>
+    <p class="status" onclick="toDo.style.display='none'; inProgress.style.display='none'; done.style.display='block';">Done</p>
+  </div> -->
+
+  <!-- Board -->
+  <div class="board">
+    <div class="column" id="toDo" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2>To Do</h2>
+      <div class="tasks" id="taskContainer"></div>
+    </div>
+    <div class="column" id="inProgress" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2>In Progress</h2>
+      <div class="tasks" id="inprogress"></div>
+    </div>
+    <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h2>Done</h2>
+      <div class="tasks" id="Done"></div>
+    </div>
   </div>
 
-  <!-- Main -->
-  <div class="main">
-    <div class="header">
-      <h1>TASKHIVE</h1>
-      <button id="addTaskBtn">Add Task</button>
-    </div>
-<div id="Status"  style="  padding: 2px; padding-left: 10px;">
-        <p class="status" onclick=" toDo.style.display='block'; inProgress.style.display='block'; done.style.display='block';">All</p>
-        <p class="status" onclick="toDo.style.display='block'; inProgress.style.display='none'; done.style.display='none';">To Do</p>
-        <p class="status" onclick="toDo.style.display='none'; inProgress.style.display='block'; done.style.display='none';">In Progress</p>
-        <p class="status" onclick="toDo.style.display='none'; inProgress.style.display='none'; done.style.display='block';">Done</p>
-    </div>
-    <div class="board">
-      <div class="column" id="toDo" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <h2>To Do</h2>
-        <div class="tasks" id="taskContainer"></div>
-      </div>
-      <div class="column" id="inProgress" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <h2>In Progress</h2>
-        <div class="tasks" id="inprogress"></div>
-      </div>
-      <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <h2>Done</h2>
-        <div class="tasks" id="Done"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add/Edit Task Modal -->
-  <div id="taskModal" class="modal" style="z-index: 999999999999;">
+  <!-- Example modal placeholders -->
+    <div id="taskModal" class="modal" style="z-index: 999999999999;">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h2 id="modalTitle">Add Task</h2>
       <div id="taskWarning" class="warning" style="display:none;"></div>
       <input type="text" id="taskTitle" placeholder="Title" required><br><br>
       <textarea id="taskDescription" placeholder="Description" required></textarea><br><br>
-      <select id="taskAssignee" required></select><br><br>
+      <select id="taskAssignee" required>
+        
+      </select><br><br>
       <select id="taskStatus" required>
-        <option value="" disabled selected>Select Status</option>
+        <option value="option" disabled selected>Select Status</option>
         <option value="To Do">To Do</option>
         <option value="In Progress">In Progress</option>
         <option value="Done">Done</option>
@@ -229,256 +713,27 @@
       <button onclick="successModal.style.display='none'">OK</button>
     </div>
   </div>
-
-<script>
-const apiUrl = "task.json";
-let tasks = [];
-let currentTaskId = null;
-let taskToDelete = null;
-
-// Load users for dropdown + sidebar
-async function loadUsers() {
-  try {
-    const res = await fetch("uses.json");
-    const users = await res.json();
-    const select = document.getElementById("taskAssignee");
-    select.innerHTML = `<option value="" disabled selected>Select Assignee</option>`;
-    users.forEach(u => {
-      const opt = document.createElement("option");
-      opt.value = u.name;
-      opt.textContent = u.name;
-      select.appendChild(opt);
+  <!-- Sidebar toggle script -->
+  <script>
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('open');
     });
-    // Sidebar shows first user
-    document.getElementById("currentUser").textContent = `👤 ${users[0].name}`;
-  } catch (err) {
-    console.error("Error loading users:", err);
-  }
-}
-loadUsers();
+      const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarClose = document.getElementById('sidebarClose');
 
-// Fetch tasks
-async function fetchTasks() {
-  try {
-    const response = await fetch(apiUrl);
-    tasks = await response.json();
-    renderTasks();
-  } catch (error) {
-    console.error("Error fetching tasks:", error);
-  }
-}
-fetchTasks();
-
-// Render tasks
-function renderTasks() {
-  document.getElementById("taskContainer").innerHTML = "";
-  document.getElementById("inprogress").innerHTML = "";
-  document.getElementById("Done").innerHTML = "";
-
-  tasks.forEach(task => {
-    const taskCard = document.createElement("div");
-    taskCard.className = "task";
-    taskCard.setAttribute("draggable", true);
-    taskCard.setAttribute("ondragstart", "drag(event)");
-    taskCard.dataset.id = task.id;
-
-    taskCard.innerHTML = `
-      <h3>${task.title}</h3>
-      <p>👤 ${task.assignee}</p>
-      <p><strong>Progress</strong> ${task.progress/10}/${task.const}</p>
-      <div class="progress2"><div class="progress" style="width:${task.progress}%;"></div></div>
-      <div class="task-menu">
-        <button class="menu-btn menu" onclick="toggleMenu(this)">⋮</button>
-        <div class="menu-options">
-          <div onclick="openEditTaskModal(${task.id})">✏️ Edit</div>
-          <div onclick="deleteTask(${task.id})">🗑️ Delete</div>
-        </div>
-      </div>
-      <p class='dueDate'>${new Date(task.dueDate).toLocaleDateString()}</p>
-      <button onclick="openViewModal(${task.id})">View</button>
-    `;
-
-    if (task.Status === "To Do") {
-      document.getElementById("taskContainer").appendChild(taskCard);
-    } else if (task.Status === "In Progress") {
-      document.getElementById("inprogress").appendChild(taskCard);
-    } else if (task.Status === "Done") {
-      document.getElementById("Done").appendChild(taskCard);
-    }
-  });
-}
-
-// Toggle menu
-// function toggleMenu(btn) {
-//    const menu = btn.nextElementSibling;
-//    menu.style.display = menu.style.display === "block" ? "none" : "block";
-//  }
-function toggleMenu(btn) {
-  const menu = btn.nextElementSibling;
-
-  // First close all menus
-  document.querySelectorAll(".menu-options").forEach(m => {
-    m.style.display = "none";
-  });
-
-  // Then toggle the clicked one
-  menu.style.display = "block";
-}
-
-// Close menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".task-menu")) {
-    document.querySelectorAll(".menu-options").forEach(m => {
-      m.style.display = "none";
-    });
-  }
+// Open sidebar
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
 });
 
+// Close sidebar
+sidebarClose.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+});
 
-// Open add modal
-document.getElementById("addTaskBtn").onclick = () => {
-  clearModalInputs();
-  document.getElementById("modalTitle").textContent = "Add Task";
-  document.getElementById("taskModal").style.display = "flex";
-  currentTaskId = null;
-};
-
-function closeModal() {
-  document.getElementById("taskModal").style.display = "none";
-}
-
-// Clear modal
-function clearModalInputs() {
-  document.getElementById("taskTitle").value = "";
-  document.getElementById("taskDescription").value = "";
-  document.getElementById("taskAssignee").value = "";
-  document.getElementById("taskStatus").value = "";
-  document.getElementById("taskDueDate").value = "";
-  document.getElementById("taskWarning").style.display = "none";
-  document.getElementById("saveTaskBtn").textContent = "Add Task";
-}
-
-// Save task
-document.getElementById("saveTaskBtn").onclick = async () => {
-  const title = document.getElementById("taskTitle").value;
-  const description = document.getElementById("taskDescription").value;
-  const assignee = document.getElementById("taskAssignee").value;
-  const dueDate = document.getElementById("taskDueDate").value;
-  const Status = document.getElementById("taskStatus").value;
-
-  if (!title || !description || !assignee || !dueDate || !Status) {
-    document.getElementById("taskWarning").textContent = "Please fill all fields.";
-    document.getElementById("taskWarning").style.display = "block";
-    return;
-  }
-
-  const newTask = { title, description, assignee, dueDate, Status, const:10, progress:0 };
-
-  try {
-    if (currentTaskId) {
-      // update
-      await fetch(`${apiUrl}/${currentTaskId}`, {
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(newTask)
-      });
-      const idx = tasks.findIndex(t => t.id === currentTaskId);
-      tasks[idx] = { ...tasks[idx], ...newTask };
-    } else {
-      // add
-      await fetch(apiUrl, {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(newTask)
-      });
-      tasks.push({ ...newTask, id: Date.now() });
-    }
-    renderTasks();
-    document.getElementById("successModal").style.display = "flex";
-    document.getElementById("successMessage").textContent = "Task saved successfully";
-    closeModal();
-  } catch(err) {
-    console.error("Save error", err);
-  }
-};
-
-// Edit
-function openEditTaskModal(id) {
-  const t = tasks.find(x=>x.id===id);
-  if(!t) return;
-  document.getElementById("taskTitle").value = t.title;
-  document.getElementById("taskDescription").value = t.description;
-  document.getElementById("taskAssignee").value = t.assignee;
-  document.getElementById("taskStatus").value = t.Status;
-  document.getElementById("taskDueDate").value = t.dueDate;
-  document.getElementById("modalTitle").textContent = "Edit Task";
-  document.getElementById("saveTaskBtn").textContent = "Save Changes";
-  document.getElementById("taskModal").style.display = "flex";
-  currentTaskId = id;
-}
-
-// View
-function openViewModal(id) {
-  const t = tasks.find(x=>x.id===id);
-  if(!t) return;
-  document.getElementById("viewMessage").textContent = "View Task";
-  document.getElementById("mainView").innerHTML = `
-    <h3>${t.title}</h3>
-    <p>${t.description}</p>
-    <p>Assignee: ${t.assignee}</p>
-    <p>Due: ${new Date(t.dueDate).toLocaleDateString()}</p>
-    <div class="progress2"><div class="progress" style="width:${t.progress}%;"></div></div>
-    <button onclick="openEditTaskModal(${t.id})">Edit</button>
-    <button onclick="deleteTask(${t.id})">Delete</button>
-  `;
-  document.getElementById("viewModal").style.display = "flex";
-}
-
-// Delete
-function deleteTask(id) {
-  taskToDelete = id;
-  document.getElementById("confirmModal").style.display = "flex";
-}
-document.getElementById("confirmDeleteBtn").onclick = async () => {
-  if(!taskToDelete) return;
-  try {
-    await fetch(`${apiUrl}/${taskToDelete}`, { method:"DELETE" });
-    tasks = tasks.filter(t => t.id !== taskToDelete);
-    renderTasks();
-    document.getElementById("successModal").style.display = "flex";
-    document.getElementById("successMessage").textContent = "Task deleted";
-  } catch(err) {
-    console.error("Delete error", err);
-  }
-  document.getElementById("confirmModal").style.display = "none";
-};
-document.getElementById("cancelDeleteBtn").onclick = () => {
-  taskToDelete = null;
-  document.getElementById("confirmModal").style.display = "none";
-};
-
-// Drag drop
-function allowDrop(e){ e.preventDefault(); }
-function drag(e){ e.dataTransfer.setData("id", e.target.dataset.id); }
-function drop(e){
-  e.preventDefault();
-  const id = e.dataTransfer.getData("id");
-  const t = tasks.find(x=>x.id==id);
-  if(!t) return;
-  const newStatus = e.target.closest(".column").id;
-  if(newStatus==="toDo") t.Status="To Do";
-  if(newStatus==="inProgress") t.Status="In Progress";
-  if(newStatus==="done") t.Status="Done";
-  renderTasks();
-}
-function updateProgress(taskId, newValue) {
-  const task = tasks.find(t => t.id === taskId);
-  if (task) {
-    task.progress = parseInt(newValue, 10);
-    updateTaskStatus(task); // reuse PUT request
-  }
-}
-
-</script>
+  </script>
+  <script src="new.js"></script>
 </body>
 </html>
+
